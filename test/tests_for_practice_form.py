@@ -2,9 +2,11 @@ import os
 
 from selene import browser, have, be
 
+from page.registration_page import RegistrationPage
+
 
 def test_fill_registration_form():
-    browser.open('/automation-practice-form')
+    registration_page = RegistrationPage()
 
     browser.element('#firstName').should(be.blank).type('Vitalii')
     browser.element('#lastName').should(be.blank).type('Sharov')
