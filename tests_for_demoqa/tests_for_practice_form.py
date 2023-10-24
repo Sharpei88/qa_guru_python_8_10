@@ -30,7 +30,7 @@ def test_fill_registration_form():
 
     browser.all('label[for^="hobbies-checkbox"]').element_by(have.exact_text('Sports')).click()
 
-    browser.element('#uploadPicture').send_keys(os.path.abspath('resources/23.jpg'))
+    browser.element('#uploadPicture').send_keys(os.path.abspath('../resources/23.jpg'))
 
     browser.element('#currentAddress').type('Long address for checking the address \n'
                                             ' entry form and entering it into the test \n'
