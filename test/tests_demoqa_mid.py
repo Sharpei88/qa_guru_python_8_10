@@ -7,8 +7,9 @@ from page.registration_page import RegistrationPage
 
 def test_fill_registration_form():
     registration_page = RegistrationPage()
+    registration_page.open_page()
 
-    browser.element('#firstName').should(be.blank).type('Vitalii')
+    registration_page.fill_first_name('Vitalii')
     browser.element('#lastName').should(be.blank).type('Sharov')
     browser.element('#userEmail').should(be.blank).type('vitalii@example.com')
 
