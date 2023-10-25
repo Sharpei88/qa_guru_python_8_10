@@ -5,29 +5,20 @@ from selene import browser, have, be
 from page.registration_page import RegistrationPage
 
 
+registration_page = RegistrationPage()
 def test_fill_registration_form():
-    registration_page = RegistrationPage()
+
     registration_page.open_page()
 
     registration_page.fill_first_name('Vitalii')
-    browser.element('#lastName').should(be.blank).type('Sharov')
-    browser.element('#userEmail').should(be.blank).type('vitalii@example.com')
+    registration_page.fill_last_name('Sharov')
+    registration_page.fill_email('vitalii@example.com')
+    registration_page.gender_selection('Male')
+    registration_page.fill_user_number('1234567890')
 
-    browser.all('label[for^="gender-radio"]').element_by(have.exact_text('Male')).click()
+    registration_page.fill_date_of_birth(year='1988', month='June', day='26')
 
-    browser.element('#userNumber').should(be.blank).type('1234567890')
-
-    browser.element('#dateOfBirthInput').should(be.visible).click()
-    browser.element('.react-datepicker__month-select').should(be.visible).click().element(
-                    'option[value="5"]').should(be.visible).click()
-    browser.element('.react-datepicker__year-select').should(be.visible).click().element(
-                    'option[value="1988"]').should(be.visible).click()
-    browser.element('.react-datepicker__header :nth-child(1)').should(have.exact_text('June 1988'))
-    browser.element('.react-datepicker__day--026').should(be.visible).click()
-    browser.element('#dateOfBirthInput').should(have.value('26 Jun 1988'))
-
-    browser.element('#subjectsInput').type('m')
-    browser.all('.subjects-auto-complete__option').element_by(have.exact_text('Maths')).click()
+    registration_page.select_subject('m')
 
     browser.all('.subjects-auto-complete__multi-value__label').should(have.exact_texts('Maths'))
 
