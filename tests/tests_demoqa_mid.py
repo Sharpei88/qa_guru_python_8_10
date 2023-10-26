@@ -1,5 +1,3 @@
-from selene import browser, have, be
-
 from page.registration_page import RegistrationPage
 
 registration_page = RegistrationPage()
@@ -33,4 +31,3 @@ def test_fill_registration_form():
         '23.jpg',
         'Lenin Street',
         'Haryana Karnal')
-
