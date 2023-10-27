@@ -6,7 +6,6 @@ from users.users import User
 
 
 class RegistrationPage:
-
     def open_form(self):
         browser.open('/automation-practice-form')
         return self
