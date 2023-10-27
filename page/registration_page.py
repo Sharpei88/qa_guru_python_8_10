@@ -1,82 +1,46 @@
-from selene import browser, be, have
+from selene import have, command
+from selene.support.shared import browser
+
 import resources
+from users.users import User
 
 
 class RegistrationPage:
-    def open_page(self):
+
+    def open_form(self):
         browser.open('/automation-practice-form')
         return self
 
-    def fill_first_name(self, value):
-        browser.element('#firstName').should(be.blank).type(value)
-        return self
+    def submit_form(self, user: User):
+        browser.element('#firstName').type(user.first_name)
+        browser.element('#lastName').type(user.last_name)
+        browser.element('#userEmail').type(user.email)
+        browser.all('[name=gender]').element_by(have.value(user.gender)).element('..').click()
+        browser.element('#userNumber').type(user.number)
+        browser.element('#dateOfBirthInput').click()
+        browser.element('.react-datepicker__year-select').type(user.date_of_birth.year)
+        browser.element('.react-datepicker__month-select').type(user.date_of_birth.strftime('%B'))
+        browser.element(f'.react-datepicker__day--0{user.date_of_birth.day}').click()
+        browser.element('#subjectsInput').type(user.subject).press_enter()
+        browser.all('.custom-checkbox').element_by(have.exact_text(user.hobbies)).click()
+        browser.element('#uploadPicture').send_keys(resources.path(user.picture))
+        browser.element('#currentAddress').type(user.current_address)
+        browser.element('#react-select-3-input').type(user.state).press_enter()
+        browser.element('#react-select-4-input').type(user.city).press_enter().press_enter()
 
-    def fill_last_name(self, value):
-        browser.element('#lastName').should(be.blank).type(value)
-        return self
-
-    def fill_email(self, value):
-        browser.element('#userEmail').should(be.blank).type('vitalii@example.com')
-        return self
-
-    def gender_selection(self, value):
-        browser.all('label[for^="gender-radio"]').element_by(have.exact_text(value)).click()
-        return self
-
-    def fill_user_number(self, value):
-        browser.element('#userNumber').should(be.blank).type(value)
-        return self
-
-    def fill_date_of_birth(self, year, month, day):
-        browser.element('#dateOfBirthInput').should(be.visible).click()
-        browser.element('.react-datepicker__month-select').send_keys(month)
-        browser.element('.react-datepicker__year-select').click().send_keys(year).press_enter()
-        browser.element(f'.react-datepicker__day--0{day}').click()
-        return self
-
-    def select_subject(self, value):
-        browser.element('#subjectsInput').type(value)
-        browser.all('.subjects-auto-complete__option').element_by(have.exact_text('Maths')).click()
-        browser.all('.subjects-auto-complete__multi-value__label').should(have.exact_texts('Maths'))
-        return self
-
-    def select_hobbies(self, value):
-        browser.all('label[for^="hobbies-checkbox"]').element_by(have.exact_text(value)).click()
-        return self
-
-    def add_file(self, file_name):
-        browser.element('#uploadPicture').send_keys(resources.path(file_name))
-        return self
-
-    def fill_current_adress(self, value):
-        browser.element('#currentAddress').type(value)
-        return self
-
-    def select_state(self, value):
-        browser.element('#react-select-3-input').type(value).press_enter()
-        return self
-
-    def select_city(self, value):
-        browser.element('#react-select-4-input').type(value).press_enter()
-        return self
-
-    def submit_form(self):
-        browser.element('#react-select-4-input').press_enter()
-        return self
-
-    def registered_user_with(self, first_and_last_name, email, gender, number, date_of_birth,
-                             subjects, hobbies, file, current_address, state_and_city):
+    def should_have_registrated_user(self, user: User):
+        user.date_of_birth = f'{user.date_of_birth.day} {user.date_of_birth.strftime("%B")},{user.date_of_birth.year}'
         browser.element('.table').all('td').even.should(
             have.exact_texts(
-                first_and_last_name,
-                email,
-                gender,
-                number,
-                date_of_birth,
-                subjects,
-                hobbies,
-                file,
-                current_address,
-                state_and_city
+                f'{user.first_name} {user.last_name}',
+                user.email,
+                user.gender,
+                user.number,
+                user.date_of_birth,
+                user.subject,
+                user.hobbies,
+                user.picture,
+                user.current_address,
+                f'{user.state} {user.city}',
             )
         )
