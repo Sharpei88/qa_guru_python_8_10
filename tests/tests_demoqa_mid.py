@@ -1,7 +1,8 @@
 from page.registration_page import RegistrationPage
 
-
 registration_page = RegistrationPage()
+
+
 def test_fill_registration_form():
     registration_page.open_page()
     registration_page.fill_first_name('Vitalii')
@@ -29,4 +30,3 @@ def test_fill_registration_form():
         '23.jpg',
         'Lenin Street',
         'Haryana Karnal')
-
