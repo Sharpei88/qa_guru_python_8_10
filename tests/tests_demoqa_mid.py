@@ -5,6 +5,7 @@ registration_page = RegistrationPage()
 
 def test_fill_registration_form():
     registration_page.open_page()
+
     registration_page.fill_first_name('Vitalii')
     registration_page.fill_last_name('Sharov')
     registration_page.fill_email('vitalii@example.com')
